@@ -38,7 +38,7 @@ describe UsersController do
 
 
 
-it "should have the right title" do
+    it "should have the right title" do
       get :show, :id => @user
       response.should have_selector("title", :content => @user.name)
     end
@@ -53,6 +53,14 @@ it "should have the right title" do
       response.should have_selector("h1>img", :class => "gravatar")
     end
     
+
+    it "should show the user's microposts" do
+      mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
+      mp2 = Factory(:micropost, :user => @user, :content => "Baz quux")
+      get :show, :id => @user
+      response.should have_selector("span.content", :content => mp1.content)
+      response.should have_selector("span.content", :content => mp2.content)
+    end
 
 
  end
